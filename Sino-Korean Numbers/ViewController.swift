@@ -25,26 +25,15 @@ class ViewController: NSViewController , NSTextViewDelegate{
 
 
     func textDidChange(notification: NSNotification) {
-         NSLog("editando")
     }
     
     override func controlTextDidChange(obj: NSNotification) {
-        NSLog("editando")
-        var formatter = NSNumberFormatter()
+        let formatter = NSNumberFormatter()
         formatter.groupingSeparator = ","
         formatter.usesGroupingSeparator = true
-        //var stringValue = decimalNumber.stringValue
-        //NSLog("NSNumber1 : \(stringValue)")
-        //decimalNumber.stringValue = stringValue.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-//        var intVal3 = decimalNumber.stringValue
-//        NSLog("NSNumber2 : \(intVal3)")
-//        var intValueFromString = stringValue.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil)
-//        NSLog("Int en string: \(decimalNumber.stringValue)")
-//        NSLog("Int : \(intValueFromString)")
-//        var intValue = formatter.numberFromString(intValueFromString)?.integerValue
-//        NSLog("NSNumber : \(intValue)")
+
         
-        if var intVal = formatter.numberFromString(decimalNumber.stringValue.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))?.integerValue {
+        if let intVal = formatter.numberFromString(decimalNumber.stringValue.stringByReplacingOccurrencesOfString(",", withString: "", options: NSStringCompareOptions.LiteralSearch, range: nil))?.integerValue {
             if(intVal<10000000000000000){
             koreanStringLabel.stringValue=numberDecimaltoStringKorean(intVal)
             decimalNumber.stringValue = "\(intVal)"
@@ -69,7 +58,7 @@ class ViewController: NSViewController , NSTextViewDelegate{
     
     func koreanString(number: Int, base:Int, maxPower: Int, originalNumber:Int) -> String {
         if number%10 != 0{
-            var digitToString = koreanDigitNames[number%10]!
+            let digitToString = koreanDigitNames[number%10]!
             return  number%10 != 1  ? digitToString + koreanPoweString[base]!: base != 0 && base != 4 && base != 8 && base != 12 ? koreanPoweString[base]!:base == 4 && (originalNumber%(10^^8) < (10^^5)) ? koreanPoweString[base]! : base == 8 && (originalNumber%(10^^12) < (10^^9)) ? koreanPoweString[base]!: base == 12 && (originalNumber%(10^^16) < (10^^13)) ? koreanPoweString[base]! : base != 0 ? digitToString + koreanPoweString[base]!:digitToString
         }else {
             return base == 4 && (originalNumber%(10^^8) > (10^^4)) ? "만": base == 8 && (originalNumber%(10^^12) > (10^^8)) ? "억" : base == 12 && (originalNumber%(10^^16) > (10^^12)) ? "조" :""
@@ -80,14 +69,12 @@ class ViewController: NSViewController , NSTextViewDelegate{
         var output = ""
         var number = decimalNumber
         var power: Int = 0
-        var lenght:Int = Int(log10(Float(decimalNumber)))
+        let lenght:Int = Int(log10(Float(decimalNumber)))
         if number/10<1 && number == 0 {
             output = koreanDigitNames[number%10]!
         }else{
             while number > 0 {
-                var numberString:String = ""
                 output = koreanString(number, base: power, maxPower: lenght, originalNumber: decimalNumber) + output
-                //output = koreanString(number, power, lenght,decimalNumber) + output
                 power++
                 number /= 10
             }
